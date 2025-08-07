@@ -6,50 +6,38 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Data file path
-DATA_FILE = 'data.json'
+DATA_FILE = "data.json"
 
-# Load data from file
-def load_expenses():
+def read_data():
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r') as f:
-            return json.load(f)
-    return []
+        with open(DATA_FILE, "r") as file:
+            return json.load(file)
+    return {"expenses": []}
 
-# Save data to file
-def save_expenses(expenses):
-    with open(DATA_FILE, 'w') as f:
-        json.dump(expenses, f, indent=4)
+def write_data(data):
+    with open(DATA_FILE, "w") as file:
+        json.dump(data, file, indent=4)
 
-# Load initial data
-expenses = load_expenses()
-
-@app.route('/')
-def index():
-    return 'Welcome to Expense Tracker API!'
-
-
-@app.route('/api/expenses', methods=['GET'])
+@app.route("/api/expenses", methods=["GET"])
 def get_expenses():
-    return jsonify(expenses)
+    data = read_data()
+    return jsonify(data["expenses"])
 
-@app.route('/api/expenses', methods=['POST'])
+@app.route("/api/expenses", methods=["POST"])
 def add_expense():
-    data = request.json
-    expenses.append(data)
-    save_expenses(expenses)
-    return jsonify(data), 201
+    data = read_data()
+    new_expense = request.get_json()
+    data["expenses"].append(new_expense)
+    write_data(data)
+    return jsonify(new_expense), 201
 
-@app.route('/api/expenses/<int:index>', methods=['DELETE'])
-def delete_expense(index):
-    try:
-        expenses.pop(index)
-        save_expenses(expenses)
-        return jsonify({'msg': 'Deleted'})
-    except IndexError:
-        return jsonify({'error': 'Invalid index'}), 404
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+@app.route("/api/notifications", methods=["GET"])
+def get_notifications():
+    return jsonify([
+        {"id": 1, "msg": "💸 You have spent ₹500 today."},
+        {"id": 2, "msg": "📈 Expenses increased compared to yesterday."},
+        {"id": 3, "msg": "📝 Don't forget to log your meals."}
+    ])
 
-
+if __name__ == "__main__":
+    app.run(debug=True)

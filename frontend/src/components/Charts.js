@@ -1,3 +1,4 @@
+// src/components/Charts.js
 import React from "react";
 import { Pie, Line } from "react-chartjs-2";
 import {
@@ -22,13 +23,10 @@ ChartJS.register(
 );
 
 const Charts = ({ expenses }) => {
-  console.log("📊 Received expenses:", expenses);
-
   if (!expenses || expenses.length === 0) {
-    return <p style={{ padding: "1rem" }}>No data to display charts.</p>;
+    return <p>No data to display charts.</p>;
   }
 
-  // Group by category
   const categoryTotals = {};
   expenses.forEach((exp) => {
     const category = exp.category || "Uncategorized";
@@ -38,24 +36,13 @@ const Charts = ({ expenses }) => {
 
   const pieData = {
     labels: Object.keys(categoryTotals),
-    datasets: [
-      {
-        label: "Expenses by Category",
-        data: Object.values(categoryTotals),
-        backgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#8E44AD",
-          "#2ECC71",
-          "#F39C12",
-        ],
-        borderWidth: 1,
-      },
-    ],
+    datasets: [{
+      label: "Expenses by Category",
+      data: Object.values(categoryTotals),
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#8E44AD", "#2ECC71", "#F39C12"],
+    }]
   };
 
-  // Group by date (sort ascending)
   const dailyTotals = {};
   expenses.forEach((exp) => {
     const date = exp.date || "Unknown";
@@ -64,31 +51,22 @@ const Charts = ({ expenses }) => {
   });
 
   const sortedDates = Object.keys(dailyTotals).sort();
-
   const lineData = {
     labels: sortedDates,
-    datasets: [
-      {
-        label: "Daily Expenses",
-        data: sortedDates.map((date) => dailyTotals[date]),
-        fill: false,
-        borderColor: "#3498db",
-        tension: 0.3,
-      },
-    ],
+    datasets: [{
+      label: "Daily Expenses",
+      data: sortedDates.map((d) => dailyTotals[d]),
+      borderColor: "#3498db",
+      tension: 0.3
+    }]
   };
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <div>
       <h3>📊 Category-wise Expense</h3>
-      <div style={{ width: "100%", maxWidth: "400px", margin: "auto" }}>
-        <Pie data={pieData} />
-      </div>
-
-      <h3 style={{ marginTop: "2rem" }}>📈 Daily Spend Trend</h3>
-      <div style={{ width: "100%", maxWidth: "600px", margin: "auto" }}>
-        <Line data={lineData} />
-      </div>
+      <Pie data={pieData} />
+      <h3>📈 Daily Spend Trend</h3>
+      <Line data={lineData} />
     </div>
   );
 };
