@@ -61,14 +61,31 @@ const Charts = ({ expenses }) => {
     }]
   };
 
-  return (
-    <div>
-      <h3>📊 Category-wise Expense</h3>
-      <Pie data={pieData} />
-      <h3>📈 Daily Spend Trend</h3>
-      <Line data={lineData} />
+ return (
+  <div style={{ textAlign: "center", padding: "1rem" }}>
+    <h3>📊 Category-wise Expense</h3>
+    <div style={{ maxWidth: "400px", margin: "auto" }}>
+      <Pie
+        data={pieData}
+        width={400}
+        height={400}
+        options={{ maintainAspectRatio: false }}
+      />
     </div>
-  );
+
+    <h3 style={{ marginTop: "2rem" }}>📈 Daily Spend Trend</h3>
+    <div style={{ maxWidth: "600px", margin: "auto" }}>
+      <Line
+        data={lineData}
+        width={600}
+        height={300}
+        options={{ maintainAspectRatio: false }}
+      />
+    </div>
+  </div>
+);
+
+
 };
 
 export default Charts;
