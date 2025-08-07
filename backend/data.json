@@ -4,25 +4,25 @@
       "date": "2024-08-01",
       "category": "Food",
       "amount": 250,
-      "note": "Lunch at restaurant"
+      "title": "Lunch at restaurant"
     },
     {
       "date": "2024-08-02",
       "category": "Transport",
       "amount": 100,
-      "note": "Bus fare"
+      "title": "Bus fare"
     },
     {
       "date": "2024-08-03",
       "category": "Shopping",
       "amount": 600,
-      "note": "Groceries"
+      "title": "Groceries"
     },
     {
       "date": "2024-08-04",
       "category": "Entertainment",
       "amount": 300,
-      "note": "Movie tickets"
+      "title": "Movie tickets"
     }
   ]
 }
