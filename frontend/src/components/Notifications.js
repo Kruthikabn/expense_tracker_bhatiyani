@@ -14,10 +14,11 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/notifications')
-      .then((res) => setNotifications(res.data))
-      .catch((err) => console.error('Error fetching notifications:', err));
-  }, []);
+  axios
+    .get(`${process.env.REACT_APP_API_BASE_URL}/api/notifications`)
+    .then((res) => setNotifications(res.data))
+    .catch((err) => console.error("Error fetching notifications:", err));
+}, []);
 
   return (
     <Card sx={{ marginBottom: '1.5rem', backgroundColor: '#f9f9f9' }}>

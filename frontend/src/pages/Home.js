@@ -1,28 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Charts from '../components/Charts';
-import Notifications from '../components/Notifications';
 
-const Home = () => {
+
+const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/expenses')
-      .then(res => setExpenses(res.data))
-      .catch(err => console.error('Failed to fetch expenses:', err));
+    axios
+      .get("https://expense-tracker-bhatiyani.onrender.com/api/expenses")
+      .then((res) => {
+        console.log("Expenses from API:", res.data);
+        setExpenses(res.data);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Dashboard</h1>
-      
-      {/* Show alerts */}
-      <Notifications />
+    <div style={{ padding: "1rem" }}>
+      <h2>📋 All Expenses</h2>
+      <ul>
+        {expenses.map((exp, idx) => (
+          <li key={idx}>
+            {exp.title} - ₹{exp.amount} on {exp.date} ({exp.category})
+          </li>
+        ))}
+      </ul>
 
-      {/* Show charts */}
+      <h2>📊 Dashboard</h2>
       <Charts expenses={expenses} />
     </div>
   );
 };
 
-export default Home;
+export default Dashboard;
