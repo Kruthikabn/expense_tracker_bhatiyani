@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enables cross-origin requests from frontend
@@ -32,10 +33,7 @@ def delete_expense(index):
     expenses.pop(index)
     return jsonify({'msg': 'Deleted'}), 200
 
-# Start the Flask server
+# ✅ Start the Flask server using host + port for Render
 if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-    
+    port = int(os.environ.get('PORT', 5000))  # Render provides this port
+    app.run(host='0.0.0.0', port=port, debug=True)
