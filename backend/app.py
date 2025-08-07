@@ -31,6 +31,16 @@ def add_expense():
     write_data(data)
     return jsonify(new_expense), 201
 
+@app.route("/api/expenses/<int:index>", methods=["DELETE"])
+def delete_expense(index):
+    data = read_data()
+    if 0 <= index < len(data["expenses"]):
+        removed = data["expenses"].pop(index)
+        write_data(data)
+        return jsonify({"message": "Deleted", "removed": removed})
+    return jsonify({"error": "Invalid index"}), 400
+
+
 @app.route("/api/notifications", methods=["GET"])
 def get_notifications():
     return jsonify([
