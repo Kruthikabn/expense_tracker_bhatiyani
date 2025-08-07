@@ -11,6 +11,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import { Box, Typography } from "@mui/material";
 
 ChartJS.register(
   ArcElement,
@@ -24,7 +25,7 @@ ChartJS.register(
 
 const Charts = ({ expenses }) => {
   if (!expenses || expenses.length === 0) {
-    return <p>No data to display charts.</p>;
+    return <Typography>No data to display charts.</Typography>;
   }
 
   const categoryTotals = {};
@@ -61,31 +62,19 @@ const Charts = ({ expenses }) => {
     }]
   };
 
- return (
-  <div style={{ textAlign: "center", padding: "1rem" }}>
-    <h3>📊 Category-wise Expense</h3>
-    <div style={{ maxWidth: "400px", margin: "auto" }}>
-      <Pie
-        data={pieData}
-        width={400}
-        height={400}
-        options={{ maintainAspectRatio: false }}
-      />
-    </div>
+  return (
+    <Box>
+      <Typography variant="h6" style={{ marginTop: '2rem' }}>📊 Category-wise Expense</Typography>
+      <Box maxWidth={500} margin="auto">
+        <Pie data={pieData} />
+      </Box>
 
-    <h3 style={{ marginTop: "2rem" }}>📈 Daily Spend Trend</h3>
-    <div style={{ maxWidth: "600px", margin: "auto" }}>
-      <Line
-        data={lineData}
-        width={600}
-        height={300}
-        options={{ maintainAspectRatio: false }}
-      />
-    </div>
-  </div>
-);
-
-
+      <Typography variant="h6" style={{ marginTop: '2rem' }}>📈 Daily Spend Trend</Typography>
+      <Box maxWidth={600} margin="auto">
+        <Line data={lineData} />
+      </Box>
+    </Box>
+  );
 };
 
 export default Charts;

@@ -1,83 +1,77 @@
+// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Charts from '../components/Charts';
 import Notifications from '../components/Notifications';
-import { Link } from 'react-router-dom';
+import {
+  Typography,
+  Container,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Home = () => {
   const [expenses, setExpenses] = useState([]);
   const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
-  // Fetch expenses
   useEffect(() => {
-    axios.get(`${API_BASE}/api/expenses`)
-      .then((res) => setExpenses(res.data))
-      .catch((err) => console.error("Error fetching expenses:", err));
-  }, [API_BASE]);
+    fetchExpenses();
+  }, []);
 
-  // Handle delete
-  const handleDelete = (index) => {
-    if (window.confirm("Are you sure you want to delete this expense?")) {
-      axios
-        .delete(`${API_BASE}/api/expenses/${index}`)
-        .then(() => {
-          const updated = [...expenses];
-          updated.splice(index, 1); // Remove locally
-          setExpenses(updated);
-        })
-        .catch((err) => console.error("Error deleting expense:", err));
-    }
+  const fetchExpenses = () => {
+    axios
+      .get(`${API_BASE}/api/expenses`)
+      .then((res) => setExpenses(res.data))
+      .catch((err) => console.error('Error fetching expenses:', err));
+  };
+
+  const deleteExpense = (index) => {
+    axios
+      .delete(`${API_BASE}/api/expenses/${index}`)
+      .then(() => {
+        const updated = [...expenses];
+        updated.splice(index, 1);
+        setExpenses(updated);
+      })
+      .catch((err) => console.error('Error deleting expense:', err));
   };
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>📋 All Expenses</h2>
-
-      {/* Add Expense Button */}
-      <div style={{ textAlign: "right", marginBottom: "1rem" }}>
-        <Link to="/add">
-          <button style={{
-            padding: "10px 15px",
-            backgroundColor: "#1976d2",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}>
-            ➕ Add Expense
-          </button>
-        </Link>
-      </div>
+    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      <Typography variant="h4" gutterBottom>📋 Dashboard</Typography>
 
       <Notifications />
       <Charts expenses={expenses} />
 
-      <ul>
-        {expenses.length === 0 ? (
-          <p>No expenses yet.</p>
-        ) : (
-          expenses.map((exp, index) => (
-            <li key={index} style={{ marginBottom: "8px" }}>
-              <strong>{exp.title}</strong> - ₹{exp.amount} on {exp.date} ({exp.category})
-              <button
-                onClick={() => handleDelete(index)}
-                style={{
-                  marginLeft: "10px",
-                  backgroundColor: "#e74c3c",
-                  color: "white",
-                  border: "none",
-                  padding: "5px 10px",
-                  cursor: "pointer",
-                  borderRadius: "4px"
-                }}
-              >
-                🗑️ Delete
-              </button>
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
+      <Divider style={{ margin: '2rem 0' }} />
+
+      <Typography variant="h6">🧾 All Expenses</Typography>
+      {expenses.length === 0 ? (
+        <Typography>No expenses yet.</Typography>
+      ) : (
+        <List>
+          {expenses.map((exp, index) => (
+            <ListItem
+              key={index}
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteExpense(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemText
+                primary={`${exp.title} - ₹${exp.amount}`}
+                secondary={`${exp.category} on ${exp.date}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
+    </Container>
   );
 };
 
