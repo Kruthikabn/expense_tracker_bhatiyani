@@ -1,0 +1,6 @@
+{
+  "notifications": [
+    { "id": 1, "msg": "Budget limit nearing!" },
+    { "id": 2, "msg": "You spent ₹150 on Dinner" }
+  ]
+}
