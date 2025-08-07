@@ -24,6 +24,11 @@ def save_expenses(expenses):
 # Load initial data
 expenses = load_expenses()
 
+@app.route('/')
+def index():
+    return 'Welcome to Expense Tracker API!'
+
+
 @app.route('/api/expenses', methods=['GET'])
 def get_expenses():
     return jsonify(expenses)
@@ -46,4 +51,5 @@ def delete_expense(index):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
+
 
