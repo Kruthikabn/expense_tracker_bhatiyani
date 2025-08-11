@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Charts from '../components/Charts';
@@ -10,9 +9,11 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  Button
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [expenses, setExpenses] = useState([]);
@@ -43,6 +44,17 @@ const Home = () => {
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
       <Typography variant="h4" gutterBottom>📋 Dashboard</Typography>
+
+      {/* Add Expense Button */}
+      <Button
+        component={Link}
+        to="/add"
+        variant="contained"
+        color="primary"
+        style={{ marginBottom: '1.5rem' }}
+      >
+        ➕ Add Expense
+      </Button>
 
       <Notifications />
       <Charts expenses={expenses} />
